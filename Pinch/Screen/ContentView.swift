@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     // MARK: - PROPERTY
     @State private var isAnimating: Bool = false
+    @State private var imageScale: CGFloat = 1
     
     // MARK: - FUNCTION
     
@@ -25,6 +26,21 @@ struct ContentView: View {
                     .padding()
                     .shadow(color: .black.opacity(2), radius: 12, x: 2, y: 2)
                     .opacity(isAnimating ? 1 : 0)
+                    .scaleEffect(imageScale)
+                // MARK: - 1. TAP GESTURE
+                // count 2 refers to the amount of taps
+                    .onTapGesture(count: 2, perform: {
+                        if imageScale == 1 {
+                            withAnimation(.spring()) {
+                                imageScale = 5 // scale up if default value is 1
+                            }
+                        } else { // if image is already scaled up go back to default state
+                            withAnimation(.spring()) {
+                                imageScale = 1
+                            }
+                        }
+                    })
+                
             } // End of Zstack
             .navigationTitle("Pinch & Zoom")
             .navigationBarTitleDisplayMode(.inline)
