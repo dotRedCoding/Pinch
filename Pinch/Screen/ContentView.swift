@@ -63,6 +63,26 @@ struct ContentView: View {
                             }
                         }
                     )
+                // MARK: - 3. MAGNIFICATION
+                    .gesture(
+                    MagnificationGesture()
+                        .onChanged { value in
+                            withAnimation(.linear(duration: 1)) {
+                                if imageScale >= 1 && imageScale <= 5 {
+                                    imageScale = value
+                                } else if imageScale > 5 {
+                                    imageScale = 5
+                                }
+                            }
+                        } // End of onChanged
+                        .onEnded { _ in // when gesture finished we are ensuring that we are not exceeding values
+                            if imageScale > 5 {
+                                imageScale = 5
+                            } else if imageScale <= 1 {
+                                resetImageState()
+                            }
+                        }
+                    )
                 
             } // End of Zstack
             .navigationTitle("Pinch & Zoom")
